@@ -1,1 +1,5 @@
-# ceres-contracts
+# Ceres DAO
+
+Ceres DAO is a decentralized digital asset management protocol empowered by Web 3.0. Ceres DAO's mission is to bring decentralization and transparency to the assets management space. Ceres DAO enables retail investors to participate in the early stage of a project. Conventionally, hedge funds or venture capitals have the opportunity to provide funding during the seed/private round. They are able to buy the tokens at a relatively low price, and thus create big selling pressure once the tokens are traded publicly. Through Ceres DAO, retail investors’ disadvantages can be neutralized.
+
+Ceres DAO redefines assets management. It carries much-needed innovation to the conventional financial investment industry and in the process, expands the types of assets investments. Ceres DAO with a fully decentralized DAO governance, performance-based ranking, and reward system, creates a space for co-creation for a win-win situation among users. Any users in the Ceres DAO can raise a proposal for the benefits of the ecosystem. The DAO governance structure paves the way for users to contribute using blockchain-native solutions that harness the power of Web 3.0.
