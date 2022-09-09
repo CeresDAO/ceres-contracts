@@ -1,5 +1,9 @@
 # Ceres DAO
 
-Ceres DAO is a decentralized digital asset management protocol empowered by Web 3.0. Ceres DAO's mission is to bring decentralization and transparency to the assets management space. Ceres DAO enables retail investors to participate in the early stage of a project. Conventionally, hedge funds or venture capitals have the opportunity to provide funding during the seed/private round. They are able to buy the tokens at a relatively low price, and thus create big selling pressure once the tokens are traded publicly. Through Ceres DAO, retail investors’ disadvantages can be neutralized.
+Ceres DAO is the world's first decentralized digital asset management protocol based on DAO governance and empowered by Web3. Ceres DAO builds a new standardized DeFi investment model that provides a non-custodial and decentralized crypto asset management service.
 
-Ceres DAO redefines assets management. It carries much-needed innovation to the conventional financial investment industry and in the process, expands the types of assets investments. Ceres DAO with a fully decentralized DAO governance, performance-based ranking, and reward system, creates a space for co-creation for a win-win situation among users. Any users in the Ceres DAO can raise a proposal for the benefits of the ecosystem. The DAO governance structure paves the way for users to contribute using blockchain-native solutions that harness the power of Web 3.0.
+In terms of its governance structure, the Ceres DAO is a community-driven organization that gives DAO members a flexible way to take part in investment decisions that traditional venture capital fund models can't match.
+
+It will also make it easier for people to join DeFi, giving them more access to investment opportunities and returns without having to deal with volatile assets or actively manage their capital.
+
+Ceres DAO uses a weighted voting rights model or an AB share model. The two main tokens in the Ceres DAO ecosystem are the CES and the CRS, where the CES token is an equity token and the CRS token is a secondary market liquidity token. The CES token and the CRS token are 1:1 in terms of price.
