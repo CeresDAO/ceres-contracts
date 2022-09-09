@@ -5,12 +5,12 @@ import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 
 
 contract CRS is ERC20Burnable {
-    using SafeMath for uint256;
     address mintAdderss;
 
     constructor(string memory name_, string memory symbol_,address addr_)
         ERC20(name_, symbol_)
     {
+        require(addr_ != address(0),"ZERO ADDRESS ERROR");
          mintAdderss = addr_;
         _mint(mintAdderss,  10**12 * 10**18);
     }
