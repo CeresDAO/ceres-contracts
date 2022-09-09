@@ -258,18 +258,16 @@ abstract contract ERC721A is
 
     uint256 lowestTokenToCheck;
 
-    if (tokenId < 1001 && tokenId >= maxDaoBatchSize) {
-      lowestTokenToCheck = tokenId - maxDaoBatchSize + 1;
-    }
-    if (tokenId > 1001 && tokenId >= maxNodeBatchSize) {
-      lowestTokenToCheck = tokenId - maxNodeBatchSize + 1;
-    }
-
-    for (uint256 curr = tokenId; curr >= lowestTokenToCheck; curr--) {
-      TokenOwnership memory ownership = _ownerships[curr];
-      if (ownership.addr != address(0)) {
-        return ownership;
-      }
+    if(tokenId < 1001){
+      if(tokenId >=maxDaoBatchSize)
+        lowestTokenToCheck = tokenId - maxDaoBatchSize + 1;
+      else
+        lowestTokenToCheck = 1;
+    }else{
+      if(tokenId >=maxNodeBatchSize)
+        lowestTokenToCheck = tokenId - maxNodeBatchSize + 1;
+      else
+        lowestTokenToCheck = 1001;
     }
 
     revert("ERC721A: unable to determine the owner of token");
