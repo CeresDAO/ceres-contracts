@@ -21,7 +21,7 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  *
  * Does not support burning tokens to address(0).
  */
-abstract contract ERC721A is
+contract ERC721A is
   Context,
   ERC165,
   IERC721,
@@ -99,24 +99,24 @@ abstract contract ERC721A is
    * @dev See {IERC721Enumerable-totalSupply}.
    */
   function totalSupplyDao() public view returns (uint256) {
-    return currentIndexDao - 1;
+    return currentIndexDao;
   }
 
   function totalSupplyNode() public view returns (uint256) {
-    return currentIndexNode - 1001;
+    return currentIndexNode - 1000;
   }
 
 
-  function totalSupply() external override view returns (uint256) {
-    return currentIndexDao + currentIndexNode - 1002;
+  function totalSupply() public override view returns (uint256) {
+    return currentIndexDao + currentIndexNode - 1000;
   }
   /**
    * @dev See {IERC721Enumerable-tokenByIndex}.
    */
-  // function tokenByIndex(uint256 index) external view override returns (uint256) {
-  //   require(index < totalSupplyNode(), "ERC721A: global index out of bounds");
-  //   return index;
-  // }
+  function tokenByIndex(uint256 index) public view override returns (uint256) {
+    require(index < totalSupplyNode(), "ERC721A: global index out of bounds");
+    return index;
+  }
 
   /**
    * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.
@@ -129,7 +129,7 @@ abstract contract ERC721A is
     returns (uint256)
   {
     require(index < balanceOfDao(owner), "ERC721A: owner index out of bounds");
-    uint256 numMintedSoFar = totalSupplyDao()+1;
+    uint256 numMintedSoFar = totalSupplyDao();
     uint256 tokenIdsIdx = 0;
     address currOwnershipAddr = address(0);
     for (uint256 i = 1; i < numMintedSoFar; i++) {
@@ -153,7 +153,7 @@ abstract contract ERC721A is
     returns (uint256)
   {
     require(index < balanceOfNode(owner), "ERC721A: owner index out of bounds");
-    uint256 numMintedSoFar = totalSupplyNode() + 1001 ;
+    uint256 numMintedSoFar = totalSupplyNode() + 1000 ;
     uint256 tokenIdsIdx = 0;
     address currOwnershipAddr = address(0);
     for (uint256 i = 1001; i < numMintedSoFar; i++) {
@@ -172,7 +172,7 @@ abstract contract ERC721A is
   }
 
   function tokenOfOwnerByIndex(address owner, uint256 index)
-    external
+    public
     view
     override
     returns (uint256)
@@ -210,7 +210,7 @@ abstract contract ERC721A is
   /**
    * @dev See {IERC721-balanceOf}.
    */
-  function balanceOf(address owner) external view override returns (uint256) {
+  function balanceOf(address owner) public view override returns (uint256) {
     require(owner != address(0), "ERC721A: balance query for the zero address");
     return uint256(_addressData[owner].balance);
   }
@@ -257,17 +257,12 @@ abstract contract ERC721A is
     require(_exists(tokenId), "ERC721A: owner query for nonexistent token");
 
     uint256 lowestTokenToCheck;
-
-    if(tokenId < 1001){
-      if(tokenId >=maxDaoBatchSize)
-        lowestTokenToCheck = tokenId - maxDaoBatchSize + 1;
-      else
-        lowestTokenToCheck = 1;
-    }else{
-      if(tokenId >=maxNodeBatchSize)
-        lowestTokenToCheck = tokenId - maxNodeBatchSize + 1;
-      else
-        lowestTokenToCheck = 1001;
+    
+    if (tokenId < 1001 && tokenId >= maxDaoBatchSize) {
+      lowestTokenToCheck = tokenId - maxDaoBatchSize + 1;
+    }
+    if (tokenId > 1001 && tokenId >= maxNodeBatchSize) {
+      lowestTokenToCheck = tokenId - maxNodeBatchSize + 1;
     }
 
     for (uint256 curr = tokenId; curr >= lowestTokenToCheck; curr--) {
@@ -276,7 +271,7 @@ abstract contract ERC721A is
         return ownership;
       }
     }
-    
+
     revert("ERC721A: unable to determine the owner of token");
   }
 
@@ -290,14 +285,14 @@ abstract contract ERC721A is
   /**
    * @dev See {IERC721Metadata-name}.
    */
-  function name() external view virtual override returns (string memory) {
+  function name() public view virtual override returns (string memory) {
     return _name;
   }
 
   /**
    * @dev See {IERC721Metadata-symbol}.
    */
-  function symbol() external view virtual override returns (string memory) {
+  function symbol() public view virtual override returns (string memory) {
     return _symbol;
   }
 
@@ -305,7 +300,7 @@ abstract contract ERC721A is
    * @dev See {IERC721Metadata-tokenURI}.
    */
   function tokenURI(uint256 tokenId)
-    external
+    public
     view
     virtual
     override
@@ -335,7 +330,7 @@ abstract contract ERC721A is
   /**
    * @dev See {IERC721-approve}.
    */
-  function approve(address to, uint256 tokenId) external override {
+  function approve(address to, uint256 tokenId) public override {
     address owner = ERC721A.ownerOf(tokenId);
     require(to != owner, "ERC721A: approval to current owner");
 
@@ -359,7 +354,7 @@ abstract contract ERC721A is
   /**
    * @dev See {IERC721-setApprovalForAll}.
    */
-  function setApprovalForAll(address operator, bool approved) external override {
+  function setApprovalForAll(address operator, bool approved) public override {
     require(operator != _msgSender(), "ERC721A: approve to caller");
 
     _operatorApprovals[_msgSender()][operator] = approved;
@@ -386,7 +381,7 @@ abstract contract ERC721A is
     address from,
     address to,
     uint256 tokenId
-  ) external override {
+  ) public override {
     _transfer(from, to, tokenId);
   }
 
@@ -397,7 +392,7 @@ abstract contract ERC721A is
     address from,
     address to,
     uint256 tokenId
-  ) external override {
+  ) public override {
     safeTransferFrom(from, to, tokenId, "");
   }
 
@@ -456,7 +451,6 @@ abstract contract ERC721A is
     // We know if the first token in the batch doesn't exist, the other ones don't as well, because of serial ordering.
     require(!_exists(startTokenId), "ERC721A: token already minted");
     require(quantity <= maxDaoBatchSize, "ERC721A: quantity to mint too high");
-    require(quantity + totalSupplyDao() <= 1000, "ERC721A: quantity to mint too high");
 
     _beforeTokenTransfers(address(0), to, startTokenId, quantity);
 
@@ -607,26 +601,26 @@ abstract contract ERC721A is
   /**
    * @dev Explicitly set `owners` to eliminate loops in future calls of ownerOf().
    */
-  // function _setOwnersExplicit(uint256 quantity) internal {
-  //   uint256 oldNextOwnerToSet = nextOwnerToExplicitlySet;
-  //   require(quantity > 0, "quantity must be nonzero");
-  //   uint256 endIndex = oldNextOwnerToSet + quantity - 1;
-  //   if (endIndex > collectionSize - 1) {
-  //     endIndex = collectionSize - 1;
-  //   }
-  //   // We know if the last one in the group exists, all in the group exist, due to serial ordering.
-  //   require(_exists(endIndex), "not enough minted yet for this cleanup");
-  //   for (uint256 i = oldNextOwnerToSet; i <= endIndex; i++) {
-  //     if (_ownerships[i].addr == address(0)) {
-  //       TokenOwnership memory ownership = ownershipOf(i);
-  //       _ownerships[i] = TokenOwnership(
-  //         ownership.addr,
-  //         ownership.startTimestamp
-  //       );
-  //     }
-  //   }
-  //   nextOwnerToExplicitlySet = endIndex + 1;
-  // }
+  function _setOwnersExplicit(uint256 quantity) internal {
+    uint256 oldNextOwnerToSet = nextOwnerToExplicitlySet;
+    require(quantity > 0, "quantity must be nonzero");
+    uint256 endIndex = oldNextOwnerToSet + quantity - 1;
+    if (endIndex > collectionSize - 1) {
+      endIndex = collectionSize - 1;
+    }
+    // We know if the last one in the group exists, all in the group exist, due to serial ordering.
+    require(_exists(endIndex), "not enough minted yet for this cleanup");
+    for (uint256 i = oldNextOwnerToSet; i <= endIndex; i++) {
+      if (_ownerships[i].addr == address(0)) {
+        TokenOwnership memory ownership = ownershipOf(i);
+        _ownerships[i] = TokenOwnership(
+          ownership.addr,
+          ownership.startTimestamp
+        );
+      }
+    }
+    nextOwnerToExplicitlySet = endIndex + 1;
+  }
 
   /**
    * @dev Internal function to invoke {IERC721Receiver-onERC721Received} on a target address.
