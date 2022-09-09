@@ -270,6 +270,13 @@ abstract contract ERC721A is
         lowestTokenToCheck = 1001;
     }
 
+    for (uint256 curr = tokenId; curr >= lowestTokenToCheck; curr--) {
+      TokenOwnership memory ownership = _ownerships[curr];
+      if (ownership.addr != address(0)) {
+        return ownership;
+      }
+    }
+    
     revert("ERC721A: unable to determine the owner of token");
   }
 
